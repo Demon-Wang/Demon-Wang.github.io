@@ -89,7 +89,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#上海大学生网络安全赛"><span class="toc-text">上海大学生网络安全赛</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-boring-heap"><span class="toc-text">1.boring_heap</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-login"><span class="toc-text">2.login</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-slient-note"><span class="toc-text">3.slient_note</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-boring-heap"><span class="toc-text">1.boring_heap</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-login"><span class="toc-text">2.login</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-slient-note"><span class="toc-text">3.slient_note</span></a></li></ol>
 </div>
     
 </div>
@@ -132,7 +132,7 @@
 </span>
     </div>
     <div class="post-content ">
-        <h1 id="上海大学生网络安全赛"><a href="#上海大学生网络安全赛" class="headerlink" title="上海大学生网络安全赛"></a>上海大学生网络安全赛</h1><h2 id="1-boring-heap"><a href="#1-boring-heap" class="headerlink" title="1.boring_heap"></a>1.boring_heap</h2><p>关键点:<br>1.abs(INT_MIN)的未定义行为<br>abs(INT_MIN):-2147483648<br>abs(INT_MIN)%30:-8<br>abs(INT_MIN)%32:0<br>abs(INT_MIN)%48:-32<br>abs(INT_MIN)%64:0<br>0x40的chunk可以修改自己的header 从而构造overlap chunk 以及获取libc<br>2.因为只能申请固定的chunk 无法在__malloc_hook处构造fake chunk 所以利用main_arena修改top到__malloc_hook</p>
+        <h1 id="1-boring-heap"><a href="#1-boring-heap" class="headerlink" title="1.boring_heap"></a>1.boring_heap</h1><p>关键点:<br>1.abs(INT_MIN)的未定义行为<br>abs(INT_MIN):-2147483648<br>abs(INT_MIN)%30:-8<br>abs(INT_MIN)%32:0<br>abs(INT_MIN)%48:-32<br>abs(INT_MIN)%64:0<br>0x40的chunk可以修改自己的header 从而构造overlap chunk 以及获取libc<br>2.因为只能申请固定的chunk 无法在__malloc_hook处构造fake chunk 所以利用main_arena修改top到__malloc_hook</p>
 <p>3.需要free一个比0x50小的fast chunk  来更新main_arena 从而利用指针 0x56地址构造 0x50 fake chunk 注意这里的fake chunk够不到top<br>4.利用fake_chunk修改0x50的fastbin的指针 并且在下面再构造大小为0x50的fake chunk<br>5.利用新的fake chunk修改top<br>6.malloc一个不存在于fast bin中的chunk(需要控制此时的unsort bin为空)，修改__malloc_hook的内容为one_gadget<br>7.malloc触发漏洞</p>
 <p>大坑:<br>在arana附近构造fake chunk需要绕过判断<br>assert (!victim || chunk_is_mmapped (mem2chunk (victim)) ||<br>  ar_ptr == arena_for_chunk (mem2chunk (victim)));<br>  return victim;<br>此处需要保证mmaped为1 这样才能绕过第三个ar_ptr == arena_for_chunk (mem2chunk (victim))判断<br>该判断会造成非法内存地址访问…<br>原理是代码优化导致的|| 在某个值为1之后就跳过了之后的检测<br>assert是为0才报错</p>
 <p>所以由于ASLR造成的堆地址以0x55或者0x56开头<br>其中0x56才能通过检测<br>0x55不行！！！！</p>
