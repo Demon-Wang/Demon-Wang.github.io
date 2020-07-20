@@ -132,15 +132,8 @@
 </span>
     </div>
     <div class="post-content no-indent">
-        <h3 id="一些有用的windbg命令"><a href="#一些有用的windbg命令" class="headerlink" title="一些有用的windbg命令"></a>一些有用的windbg命令</h3><pre><code>e{b|d|D|f|p|q|w} Address [Values]
-e{a|u|za|zu} Address &quot;String&quot;
-e Address [Values]</code></pre><ul>
-<li>e:这将以与最新的e*命令相同的格式输入数据。</li>
-<li>ea和eza:作为ascii字符串写入内存；</li>
-<li>eu和ezu:作为unicode字符串写入内存。</li>
-<li>eza和ezu命令会写入一个终端空值</li>
-<li>ea和eu命令不会。字符串必须用引号括起来。</li>
-</ul>
+        <h3 id="一些有用的windbg命令"><a href="#一些有用的windbg命令" class="headerlink" title="一些有用的windbg命令"></a>一些有用的windbg命令</h3><p>e{b|d|D|f|p|q|w} Address [Values]<br>e{a|u|za|zu} Address “String”<br>e Address [Values]</p>
+<p>e:这将以与最新的e*命令相同的格式输入数据。<br>ea和eza:作为ascii字符串写入内存；<br>eu和ezu:作为unicode字符串写入内存。<br>eza和ezu命令会写入一个终端空值<br>ea和eu命令不会。字符串必须用引号括起来。</p>
 <p>数值将被解释为当前基数（16、10或8）中的数字。要更改默认基数，请使用n（set number base）命令。可以通过指定x前缀（十六进制）、0n前缀（十进制）、0t前缀（八进制）或0y前缀（二进制）覆盖默认基数。</p>
 <h3 id="Telescope"><a href="#Telescope" class="headerlink" title="Telescope"></a>Telescope</h3><p>Inspecting memory dumps is easy with the telescope command. It recursively dereferences a range of memory, letting you see everything at once. As an added bonus, Pwndbg checks all of the available registers to see if they point into the memory range.</p>
 <h3 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h3><p>Pwndbg makes searching the target memory space easy, with a complete and easy-to-use interface. Whether you’re searching for bytes, strings, or various sizes of integer values or pointers, it’s a simple command away.<br><img src="https://github.com/pwndbg/pwndbg/raw/dev/caps/search.png" alt></p>
