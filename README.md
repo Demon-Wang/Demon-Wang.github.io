@@ -1,8 +1,1 @@
-```c
-#include "stdio.h"
-
-int main(){
-	printf("test");
-	return 0;
-}
-```
+Daemon'blog with hexo.
