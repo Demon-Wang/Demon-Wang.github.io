@@ -1,1 +1,0 @@
-Daemon'blog with hexo.
